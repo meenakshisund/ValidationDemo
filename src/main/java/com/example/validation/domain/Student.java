@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Student implements Serializable {
 
-    @DecimalMin(value = "5", message = "Student age should be minimum 5")
+    @DecimalMin(value = "6", message = "Student age should be minimum 5")
     @DecimalMax(value = "18", message = "Student age should be maximum 18")
     private Integer age;
 
