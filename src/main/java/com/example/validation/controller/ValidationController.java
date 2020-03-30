@@ -3,11 +3,9 @@ package com.example.validation.controller;
 import com.example.validation.domain.Student;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -15,8 +13,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class ValidationController {
 
+    @ModelAttribute("student")
+    Student fetchStudentProcessedFromInterceptor(HttpServletRequest request) {
+        return (Student) request.getAttribute("student");
+    }
+
     @RequestMapping(value = "/student", method = RequestMethod.POST)
-    public String getStudentDetails(@RequestBody @Valid Student student, BindingResult bindingResult) {
+    public String getStudentDetails(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult) {
         String errorMessage = processBindingResult(bindingResult);
         if(student.getAge()-5 >= student.getGrade())
             return student.getName() + " is " + student.getAge() + " years old studying in grade " + student.getGrade() + " ";
